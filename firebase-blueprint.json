@@ -1,0 +1,260 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with onboarding preferences and account status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth user ID" },
+        "fullName": { "type": "string", "maxLength": 100, "description": "User's full name" },
+        "email": { "type": "string", "maxLength": 120, "description": "Email address" },
+        "country": { "type": "string", "maxLength": 80, "description": "Country of residence" },
+        "highestEducation": { "type": "string", "maxLength": 80, "description": "Highest education attained" },
+        "experienceLevel": { "type": "string", "maxLength": 60, "description": "Experience level" },
+        "workPreference": { "type": "string", "maxLength": 60, "description": "Remote, physical, or hybrid" },
+        "skills": { "type": "array", "description": "List of user skills" },
+        "targetCategories": { "type": "array", "description": "Opportunity categories of interest" },
+        "industries": { "type": "array", "description": "Industries of interest" },
+        "isOnboarded": { "type": "boolean", "description": "Whether onboarding has been completed" },
+        "role": { "type": "string", "enum": ["user", "admin"], "description": "User role" },
+        "plan": { "type": "string", "enum": ["free", "premium"], "description": "Subscription tier" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "fullName", "email", "createdAt"]
+    },
+    "Opportunity": {
+      "title": "Opportunity",
+      "description": "Verified opportunity including jobs, scholarships, grants, and internships",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Opportunity unique identifier" },
+        "title": { "type": "string", "maxLength": 200, "description": "Title of the opportunity" },
+        "organization": { "type": "string", "maxLength": 150, "description": "Hosting organization" },
+        "category": { "type": "string", "maxLength": 80, "description": "Jobs, Scholarships, Grants, etc." },
+        "location": { "type": "string", "maxLength": 100, "description": "Country or city" },
+        "workType": { "type": "string", "maxLength": 50, "description": "Remote, On-site, Hybrid" },
+        "description": { "type": "string", "maxLength": 5000, "description": "Full opportunity description" },
+        "eligibility": { "type": "string", "maxLength": 2000, "description": "Eligibility criteria summary" },
+        "requiredQualifications": { "type": "array", "description": "List of required qualifications" },
+        "requiredSkills": { "type": "array", "description": "List of required skills" },
+        "benefits": { "type": "string", "maxLength": 1500, "description": "Salary, stipend, coverage" },
+        "deadline": { "type": "string", "description": "ISO application deadline date" },
+        "officialUrl": { "type": "string", "maxLength": 500, "description": "Direct official application link" },
+        "sourceName": { "type": "string", "maxLength": 100, "description": "Data source or portal name" },
+        "verificationStatus": { "type": "string", "enum": ["verified", "unverified", "suspicious", "expired"], "description": "Verification status" },
+        "isExpired": { "type": "boolean", "description": "Whether deadline has passed" },
+        "lastChecked": { "type": "string", "description": "Last checked ISO date" },
+        "publishedAt": { "type": "string", "description": "Published date" },
+        "createdBy": { "type": "string", "description": "Admin UID or source system" }
+      },
+      "required": ["title", "organization", "category", "officialUrl", "verificationStatus"]
+    },
+    "SavedOpportunity": {
+      "title": "SavedOpportunity",
+      "description": "User bookmarked opportunities",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Bookmark ID" },
+        "userId": { "type": "string", "description": "User UID" },
+        "opportunityId": { "type": "string", "description": "Referenced opportunity ID" },
+        "opportunityTitle": { "type": "string", "description": "Cached title" },
+        "organization": { "type": "string", "description": "Cached organization" },
+        "category": { "type": "string", "description": "Cached category" },
+        "deadline": { "type": "string", "description": "Cached deadline" },
+        "createdAt": { "type": "string", "description": "Saved date" }
+      },
+      "required": ["userId", "opportunityId"]
+    },
+    "Application": {
+      "title": "Application",
+      "description": "User tracking record for an opportunity application",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Record ID" },
+        "userId": { "type": "string", "description": "User UID" },
+        "opportunityId": { "type": "string", "description": "Opportunity ID" },
+        "opportunityTitle": { "type": "string", "maxLength": 200, "description": "Title of opportunity" },
+        "organization": { "type": "string", "maxLength": 150, "description": "Organization" },
+        "status": { "type": "string", "enum": ["Saved", "Planning to Apply", "Applied", "Under Review", "Interview", "Accepted", "Rejected", "Withdrawn"], "description": "Application status" },
+        "appliedDate": { "type": "string", "description": "Date applied" },
+        "deadline": { "type": "string", "description": "Application deadline" },
+        "notes": { "type": "string", "maxLength": 2000, "description": "User private notes" },
+        "updatedAt": { "type": "string", "description": "Last updated" }
+      },
+      "required": ["userId", "opportunityTitle", "status"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Chat thread with Opportunity AI Assistant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Conversation ID" },
+        "userId": { "type": "string", "description": "Owner UID" },
+        "title": { "type": "string", "maxLength": 150, "description": "Conversation summary topic" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Update timestamp" }
+      },
+      "required": ["userId", "title"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual message in an AI conversation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Message ID" },
+        "conversationId": { "type": "string", "description": "Parent conversation ID" },
+        "userId": { "type": "string", "description": "Owner UID" },
+        "role": { "type": "string", "enum": ["user", "assistant"], "description": "Message author role" },
+        "content": { "type": "string", "maxLength": 10000, "description": "Message content" },
+        "createdAt": { "type": "string", "description": "Timestamp" }
+      },
+      "required": ["conversationId", "userId", "role", "content"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Free or subsidised online course in learning centre",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Course ID" },
+        "title": { "type": "string", "maxLength": 200, "description": "Course title" },
+        "provider": { "type": "string", "maxLength": 120, "description": "Coursera, edX, ALX, etc." },
+        "category": { "type": "string", "maxLength": 80, "description": "Field of study" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Course synopsis" },
+        "duration": { "type": "string", "maxLength": 80, "description": "e.g. 6 weeks, 40 hours" },
+        "cost": { "type": "string", "maxLength": 80, "description": "Free, Free Audit / Paid Cert" },
+        "certificate": { "type": "string", "maxLength": 100, "description": "Certificate details" },
+        "officialUrl": { "type": "string", "maxLength": 500, "description": "Direct portal URL" },
+        "lastChecked": { "type": "string", "description": "Last checked date" }
+      },
+      "required": ["title", "provider", "category", "officialUrl"]
+    },
+    "OpportunitySource": {
+      "title": "OpportunitySource",
+      "description": "Official partner or validated portal data source",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Source ID" },
+        "name": { "type": "string", "maxLength": 120, "description": "Source name" },
+        "website": { "type": "string", "maxLength": 500, "description": "Source website" },
+        "category": { "type": "string", "maxLength": 80, "description": "Jobs, Scholarships, Grants" },
+        "status": { "type": "string", "enum": ["active", "inactive", "paused"], "description": "Health status" },
+        "lastChecked": { "type": "string", "description": "Last checked date" },
+        "lastError": { "type": "string", "maxLength": 500, "description": "Last error if any" },
+        "frequency": { "type": "string", "maxLength": 50, "description": "Daily, Weekly, Live" }
+      },
+      "required": ["name", "website", "category", "status"]
+    },
+    "ScamReport": {
+      "title": "ScamReport",
+      "description": "User submissions to Opportunity Safeguard AI for fraud detection",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Report ID" },
+        "userId": { "type": "string", "description": "Submitter UID or anonymous" },
+        "targetUrl": { "type": "string", "maxLength": 500, "description": "URL submitted for review" },
+        "advertText": { "type": "string", "maxLength": 5000, "description": "Advert text / message text" },
+        "riskLevel": { "type": "string", "enum": ["verified", "unverified", "suspicious", "high_risk"], "description": "AI safety assessment" },
+        "riskAnalysis": { "type": "string", "maxLength": 3000, "description": "Detailed reasoning and red flags detected" },
+        "adminReviewed": { "type": "boolean", "description": "Whether an admin verified" },
+        "adminNotes": { "type": "string", "maxLength": 1000, "description": "Admin notes" },
+        "createdAt": { "type": "string", "description": "Submission timestamp" }
+      },
+      "required": ["riskLevel", "createdAt"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "In-app notifications for users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Notification ID" },
+        "userId": { "type": "string", "description": "Recipient UID" },
+        "title": { "type": "string", "maxLength": 150, "description": "Title" },
+        "message": { "type": "string", "maxLength": 1000, "description": "Body text" },
+        "category": { "type": "string", "enum": ["match", "deadline", "application", "system"], "description": "Category" },
+        "read": { "type": "boolean", "description": "Read status" },
+        "link": { "type": "string", "maxLength": 300, "description": "Destination link" },
+        "createdAt": { "type": "string", "description": "Timestamp" }
+      },
+      "required": ["userId", "title", "message", "read"]
+    },
+    "AdminLog": {
+      "title": "AdminLog",
+      "description": "Audit trail of administrator actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Log entry ID" },
+        "adminId": { "type": "string", "description": "Admin UID" },
+        "action": { "type": "string", "maxLength": 100, "description": "Action performed" },
+        "targetEntity": { "type": "string", "maxLength": 80, "description": "Target entity" },
+        "details": { "type": "string", "maxLength": 1000, "description": "Details" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" }
+      },
+      "required": ["adminId", "action", "timestamp"]
+    },
+    "RecentSearch": {
+      "title": "RecentSearch",
+      "description": "User past search queries for quick re-run in dashboard and explore",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Search entry ID" },
+        "userId": { "type": "string", "description": "Owner user UID" },
+        "query": { "type": "string", "maxLength": 150, "description": "Search keyword query" },
+        "category": { "type": "string", "maxLength": 80, "description": "Optional category filter" },
+        "resultCount": { "type": "integer", "description": "Number of matching opportunities found" },
+        "createdAt": { "type": "string", "description": "ISO timestamp when searched" }
+      },
+      "required": ["userId", "query", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and onboarding data"
+    },
+    "/opportunities/{opportunityId}": {
+      "schema": "Opportunity",
+      "description": "Public verified directory of opportunities"
+    },
+    "/saved_opportunities/{saveId}": {
+      "schema": "SavedOpportunity",
+      "description": "User bookmarked opportunities"
+    },
+    "/recent_searches/{searchId}": {
+      "schema": "RecentSearch",
+      "description": "User previous search history records for quick rerun"
+    },
+    "/applications/{applicationId}": {
+      "schema": "Application",
+      "description": "User job and scholarship applications tracker"
+    },
+    "/conversations/{conversationId}": {
+      "schema": "Conversation",
+      "description": "User AI assistant conversation threads"
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Individual messages in a conversation thread"
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Free and accredited learning resources"
+    },
+    "/opportunity_sources/{sourceId}": {
+      "schema": "OpportunitySource",
+      "description": "Official partner and portal sources"
+    },
+    "/scam_reports/{reportId}": {
+      "schema": "ScamReport",
+      "description": "Scam analysis submissions and safety records"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "AppNotification",
+      "description": "User in-app notification records"
+    },
+    "/admin_logs/{logId}": {
+      "schema": "AdminLog",
+      "description": "Administrative actions audit log"
+    }
+  }
+}

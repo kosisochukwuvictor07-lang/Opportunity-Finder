@@ -1,0 +1,6 @@
+{
+  "name": "Opportunity Finder AI",
+  "description": "Discover verified jobs, scholarships, grants, remote work and learning opportunities worldwide with intelligent matching and scam protection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
