@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase.ts';
+import { getApiUrl } from '../lib/api.ts';
 import { useAuth } from '../context/AuthContext.tsx';
 
 export const SafeguardView: React.FC = () => {
@@ -49,7 +50,7 @@ export const SafeguardView: React.FC = () => {
     setResult(null);
 
     try {
-      const response = await fetch('/api/gemini/safeguard', {
+      const response = await fetch(getApiUrl('/api/gemini/safeguard'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

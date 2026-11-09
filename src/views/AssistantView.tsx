@@ -23,6 +23,7 @@ import {
   doc,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase.ts';
+import { getApiUrl } from '../lib/api.ts';
 
 interface Message {
   id?: string;
@@ -72,7 +73,7 @@ export const AssistantView: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/gemini/chat', {
+      const response = await fetch(getApiUrl('/api/gemini/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

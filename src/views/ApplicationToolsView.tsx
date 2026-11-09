@@ -15,6 +15,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import jsPDF from 'jspdf';
+import { getApiUrl } from '../lib/api.ts';
 
 interface ApplicationToolsViewProps {
   opportunities: OpportunityItem[];
@@ -49,7 +50,7 @@ export const ApplicationToolsView: React.FC<ApplicationToolsViewProps> = ({
   const handleGenerateCV = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/gemini/cv-generate', {
+      const res = await fetch(getApiUrl('/api/gemini/cv-generate'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -71,7 +72,7 @@ export const ApplicationToolsView: React.FC<ApplicationToolsViewProps> = ({
   const handleGenerateCover = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/gemini/cover-letter', {
+      const res = await fetch(getApiUrl('/api/gemini/cover-letter'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -93,7 +94,7 @@ export const ApplicationToolsView: React.FC<ApplicationToolsViewProps> = ({
   const handleGenerateEmail = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/gemini/application-email', {
+      const res = await fetch(getApiUrl('/api/gemini/application-email'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -115,7 +116,7 @@ export const ApplicationToolsView: React.FC<ApplicationToolsViewProps> = ({
   const handleGenerateInterview = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/gemini/interview-prep', {
+      const res = await fetch(getApiUrl('/api/gemini/interview-prep'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

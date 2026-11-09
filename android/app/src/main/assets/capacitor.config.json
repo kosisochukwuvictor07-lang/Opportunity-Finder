@@ -1,0 +1,15 @@
+{
+	"appId": "com.opportunityfinder.ai",
+	"appName": "Opportunity Finder AI",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": true
+	},
+	"android": {
+		"allowMixedContent": true,
+		"captureInput": true,
+		"webContentsDebuggingEnabled": false
+	},
+	"plugins": {}
+}
